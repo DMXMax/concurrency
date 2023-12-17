@@ -31,3 +31,18 @@ var Take = func(done <-chan any, valueStream <-chan any, num int) <-chan any {
 	}()
 	return takeStream
 }
+
+var RepeatFn = func(done <-chan any, fn func() any) <-chan any {
+	valueStream := make(chan any)
+	go func() {
+		defer close(valueStream)
+		for {
+			select {
+			case <-done:
+				return
+			case valueStream <- fn():
+			}
+		}
+	}()
+	return valueStream
+}
