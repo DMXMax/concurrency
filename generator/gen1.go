@@ -55,6 +55,7 @@ var FanIn = func(done <-chan any, channels ...<-chan any) <-chan any {
 
 	multiplex := func(c <-chan any) {
 		defer wg.Done()
+
 		for i := range c {
 			select {
 			case <-done:
