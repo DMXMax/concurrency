@@ -49,6 +49,7 @@ var RepeatFn = func(done <-chan any, fn func() any) <-chan any {
 	return valueStream
 }
 
+// test
 var FanIn = func(done <-chan any, channels ...<-chan any) <-chan any {
 	var wg sync.WaitGroup
 	multiplexedStream := make(chan any)
