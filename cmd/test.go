@@ -6,8 +6,8 @@ import (
 
 	"os"
 
+	"github.com/DMXMax/concurrency"
 	"github.com/DMXMax/concurrency/cmd/quotegen"
-	"github.com/DMXMax/concurrency/generator"
 	"github.com/rs/zerolog/log"
 )
 
@@ -41,17 +41,18 @@ func main() {
 
 	done := make(chan any)
 	defer close(done)
-	for num := range generator.Take(done, generator.Repeat(done, 1, 2), 10) {
+	for num := range concurrency.Take(done, concurrency.Repeat(done, 1, 2), 10) {
 		fmt.Println(num)
 	}
 
-	for dat := range generator.Take(done, jsonStreamGnerator(done), 10) {
+	for dat := range concurrency.Take(done, jsonStreamGnerator(done), 10) {
 		fmt.Printf("%v\n", dat)
 	}
 
-	for quote := range generator.Take(done, quotegen.Generator(done), 10) {
+	for quote := range concurrency.Take(done, quotegen.Generator(done), 10) {
 		if quote, ok := quote.(quotegen.Quote); ok {
 			file.WriteString(fmt.Sprintf("%#v\n", quote))
+			fmt.Printf("%#v\n", quote)
 		}
 	}
 }
