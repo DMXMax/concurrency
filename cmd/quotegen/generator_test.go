@@ -10,3 +10,7 @@ func TestFetchQuotes(t *testing.T) {
 		t.Errorf("Expected 10 quotes, got %d", len(quotes))
 	}
 }
+
+func TestTee(t *testing.T) {
+
+}
